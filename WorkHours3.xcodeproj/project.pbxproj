@@ -7,23 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F657A5C1DC56371004CE058 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F657A591DC56371004CE058 /* LocationManager.m */; };
+		4F657A5D1DC56371004CE058 /* MyLocationClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F657A5B1DC56371004CE058 /* MyLocationClass.m */; };
+		4F657A611DC56418004CE058 /* phpMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F657A601DC56418004CE058 /* phpMethods.m */; };
+		4F657A8A1DC575C1004CE058 /* CoreDataWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F657A891DC575C1004CE058 /* CoreDataWorker.swift */; };
+		4F7B07BA1DCBB65F006740AA /* Engine.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B07B91DCBB65F006740AA /* Engine.m */; };
 		4FF6BB661DC54EA90008D84A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF6BB651DC54EA90008D84A /* AppDelegate.swift */; };
 		4FF6BB681DC54EA90008D84A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF6BB671DC54EA90008D84A /* ViewController.swift */; };
 		4FF6BB6B1DC54EA90008D84A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF6BB691DC54EA90008D84A /* Main.storyboard */; };
 		4FF6BB6E1DC54EA90008D84A /* WorkHours3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FF6BB6C1DC54EA90008D84A /* WorkHours3.xcdatamodeld */; };
 		4FF6BB701DC54EA90008D84A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF6BB6F1DC54EA90008D84A /* Assets.xcassets */; };
 		4FF6BB731DC54EA90008D84A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FF6BB711DC54EA90008D84A /* LaunchScreen.storyboard */; };
+		4FF6BB7B1DC554770008D84A /* NotificationLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF6BB7A1DC554770008D84A /* NotificationLocal.swift */; };
+		4FF6BB7E1DC559510008D84A /* MainTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF6BB7D1DC559510008D84A /* MainTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F657A571DC56370004CE058 /* WorkHours3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WorkHours3-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		4F657A581DC56371004CE058 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		4F657A591DC56371004CE058 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		4F657A5A1DC56371004CE058 /* MyLocationClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLocationClass.h; sourceTree = "<group>"; };
+		4F657A5B1DC56371004CE058 /* MyLocationClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLocationClass.m; sourceTree = "<group>"; };
+		4F657A5F1DC56418004CE058 /* phpMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = phpMethods.h; sourceTree = "<group>"; };
+		4F657A601DC56418004CE058 /* phpMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = phpMethods.m; sourceTree = "<group>"; };
+		4F657A621DC5666D004CE058 /* WorkHours3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkHours3.entitlements; sourceTree = "<group>"; };
+		4F657A891DC575C1004CE058 /* CoreDataWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWorker.swift; sourceTree = "<group>"; };
+		4F7B07B81DCBB65F006740AA /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
+		4F7B07B91DCBB65F006740AA /* Engine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Engine.m; sourceTree = "<group>"; };
 		4FF6BB621DC54EA90008D84A /* WorkHours3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkHours3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF6BB651DC54EA90008D84A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4FF6BB671DC54EA90008D84A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4FF6BB671DC54EA90008D84A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = WorkHours3/ViewController.swift; sourceTree = "<group>"; };
 		4FF6BB6A1DC54EA90008D84A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4FF6BB6D1DC54EA90008D84A /* WorkHours3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WorkHours3.xcdatamodel; sourceTree = "<group>"; };
 		4FF6BB6F1DC54EA90008D84A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FF6BB721DC54EA90008D84A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FF6BB741DC54EA90008D84A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FF6BB7A1DC554770008D84A /* NotificationLocal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationLocal.swift; path = WorkHours3/NotificationLocal.swift; sourceTree = "<group>"; };
+		4FF6BB7D1DC559510008D84A /* MainTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTable.swift; path = WorkHours3/MainTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,9 +57,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F657A551DC56311004CE058 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4FF6BB671DC54EA90008D84A /* ViewController.swift */,
+				4FF6BB7D1DC559510008D84A /* MainTable.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		4F657A561DC56338004CE058 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				4F657A581DC56371004CE058 /* LocationManager.h */,
+				4F657A591DC56371004CE058 /* LocationManager.m */,
+				4F657A5A1DC56371004CE058 /* MyLocationClass.h */,
+				4F657A5B1DC56371004CE058 /* MyLocationClass.m */,
+			);
+			name = LocationManager;
+			sourceTree = "<group>";
+		};
+		4F657A5E1DC563FA004CE058 /* phpClasses */ = {
+			isa = PBXGroup;
+			children = (
+				4F657A5F1DC56418004CE058 /* phpMethods.h */,
+				4F657A601DC56418004CE058 /* phpMethods.m */,
+			);
+			name = phpClasses;
+			sourceTree = "<group>";
+		};
 		4FF6BB591DC54EA80008D84A = {
 			isa = PBXGroup;
 			children = (
+				4F657A5E1DC563FA004CE058 /* phpClasses */,
+				4F657A561DC56338004CE058 /* LocationManager */,
+				4F657A551DC56311004CE058 /* Views */,
+				4FF6BB7C1DC554840008D84A /* MyClasses */,
 				4FF6BB641DC54EA90008D84A /* WorkHours3 */,
 				4FF6BB631DC54EA90008D84A /* Products */,
 			);
@@ -56,8 +109,9 @@
 		4FF6BB641DC54EA90008D84A /* WorkHours3 */ = {
 			isa = PBXGroup;
 			children = (
+				4F657A571DC56370004CE058 /* WorkHours3-Bridging-Header.h */,
+				4F657A621DC5666D004CE058 /* WorkHours3.entitlements */,
 				4FF6BB651DC54EA90008D84A /* AppDelegate.swift */,
-				4FF6BB671DC54EA90008D84A /* ViewController.swift */,
 				4FF6BB691DC54EA90008D84A /* Main.storyboard */,
 				4FF6BB6F1DC54EA90008D84A /* Assets.xcassets */,
 				4FF6BB711DC54EA90008D84A /* LaunchScreen.storyboard */,
@@ -65,6 +119,17 @@
 				4FF6BB6C1DC54EA90008D84A /* WorkHours3.xcdatamodeld */,
 			);
 			path = WorkHours3;
+			sourceTree = "<group>";
+		};
+		4FF6BB7C1DC554840008D84A /* MyClasses */ = {
+			isa = PBXGroup;
+			children = (
+				4F7B07B81DCBB65F006740AA /* Engine.h */,
+				4F7B07B91DCBB65F006740AA /* Engine.m */,
+				4FF6BB7A1DC554770008D84A /* NotificationLocal.swift */,
+				4F657A891DC575C1004CE058 /* CoreDataWorker.swift */,
+			);
+			name = MyClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -100,7 +165,16 @@
 					4FF6BB611DC54EA90008D84A = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = W3552Q3Q6S;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -140,9 +214,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F657A5C1DC56371004CE058 /* LocationManager.m in Sources */,
+				4FF6BB7E1DC559510008D84A /* MainTable.swift in Sources */,
+				4FF6BB7B1DC554770008D84A /* NotificationLocal.swift in Sources */,
+				4F657A611DC56418004CE058 /* phpMethods.m in Sources */,
 				4FF6BB6E1DC54EA90008D84A /* WorkHours3.xcdatamodeld in Sources */,
+				4F657A8A1DC575C1004CE058 /* CoreDataWorker.swift in Sources */,
+				4F657A5D1DC56371004CE058 /* MyLocationClass.m in Sources */,
 				4FF6BB681DC54EA90008D84A /* ViewController.swift in Sources */,
 				4FF6BB661DC54EA90008D84A /* AppDelegate.swift in Sources */,
+				4F7B07BA1DCBB65F006740AA /* Engine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +252,7 @@
 		4FF6BB751DC54EA90008D84A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -192,6 +274,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -220,6 +303,7 @@
 		4FF6BB761DC54EA90008D84A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -241,6 +325,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -262,12 +347,19 @@
 		4FF6BB781DC54EA90008D84A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WorkHours3/WorkHours3.entitlements;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = W3552Q3Q6S;
 				INFOPLIST_FILE = WorkHours3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dcapps.net.WorkHours3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WorkHours3-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -275,12 +367,18 @@
 		4FF6BB791DC54EA90008D84A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WorkHours3/WorkHours3.entitlements;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = W3552Q3Q6S;
 				INFOPLIST_FILE = WorkHours3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dcapps.net.WorkHours3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WorkHours3-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -304,6 +402,7 @@
 				4FF6BB791DC54EA90008D84A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

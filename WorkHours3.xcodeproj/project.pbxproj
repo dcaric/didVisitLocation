@@ -34,6 +34,7 @@
 		4F657A891DC575C1004CE058 /* CoreDataWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataWorker.swift; sourceTree = "<group>"; };
 		4F7B07B81DCBB65F006740AA /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		4F7B07B91DCBB65F006740AA /* Engine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Engine.m; sourceTree = "<group>"; };
+		4FF3750F1DD0FBDC00FEBA41 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		4FF6BB621DC54EA90008D84A /* WorkHours3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkHours3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FF6BB651DC54EA90008D84A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FF6BB671DC54EA90008D84A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = WorkHours3/ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 		4F657A561DC56338004CE058 /* LocationManager */ = {
 			isa = PBXGroup;
 			children = (
+				4FF3750F1DD0FBDC00FEBA41 /* Constants.h */,
 				4F657A581DC56371004CE058 /* LocationManager.h */,
 				4F657A591DC56371004CE058 /* LocationManager.m */,
 				4F657A5A1DC56371004CE058 /* MyLocationClass.h */,

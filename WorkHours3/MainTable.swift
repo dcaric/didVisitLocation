@@ -35,7 +35,7 @@ class MainTable: UIViewController, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
-        print ("numberOfRowsInSection")
+        //print ("numberOfRowsInSection")
         let myCoreDataObj = CoreDataWorker()
         users = myCoreDataObj.getTranscriptions()
         return (users.count)
@@ -45,7 +45,7 @@ class MainTable: UIViewController, UITableViewDelegate {
     func tableView(_ tableView: UITableView!, cellForRowAtIndexPath indexPath: IndexPath!) ->
         UITableViewCell! {
             
-            print ("cellForRowAtIndexPath")
+            //print ("cellForRowAtIndexPath")
 
             
             let CellIdentifier : String = "Cell"
@@ -65,7 +65,7 @@ class MainTable: UIViewController, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected cell #\(indexPath.row)!")
+        //print("You selected cell #\(indexPath.row)!")
     }
     
     /*

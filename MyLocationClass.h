@@ -16,5 +16,6 @@
 - (BOOL) checkLocationinsideRadius:(int) maxRadius myLocation:(CLLocation *)localLocation locationForTest:(CLLocation *)testLocation;
 - (int) checkMode;
 - (void) writeMode:(int)localMode;
+- (NSString *)getDate:(BOOL)noSeconds;
 
 @end

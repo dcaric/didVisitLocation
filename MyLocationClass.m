@@ -80,4 +80,29 @@
 }
 
 
+- (NSString *)getDate:(BOOL)noSeconds
+{
+    NSDate * now = [NSDate date];
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"HH:mm:ss"];
+    if (noSeconds)
+        [outputFormatter setDateFormat:@"HH:mm"];
+    
+    outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    
+    NSString *newDateString = [outputFormatter stringFromDate:now];
+    NSLog(@"newDateString %@", newDateString);
+    
+    NSDateFormatter *outputFormatterYear = [[NSDateFormatter alloc] init];
+    [outputFormatterYear setDateFormat:@"YYYY:MM:dd"];
+    NSString *newDateStringYear = [outputFormatterYear stringFromDate:now];
+    NSLog(@"newDateStringYear %@", newDateStringYear);
+    
+    NSString *fullDateTime = [NSString stringWithFormat:@"%@%@%@",newDateStringYear,@"-",newDateString];
+    
+    return fullDateTime;
+}
+
+
+
 @end

@@ -9,14 +9,16 @@
 #import "LocationManager.h"
 #import <UIKit/UIKit.h>
 #import "MyLocationClass.h"
-//#import "ViewController.h"
 #import "WorkHours3-Swift.h"
 #import "Engine.h"
+#include <os/log.h>
+
+#import "Constants.h"
 
 #define iPhoneConst @"iphone6_"
 @interface LocationManager () <CLLocationManagerDelegate>
 {
-    BOOL AtWork;
+    
 }
 @end
 
@@ -25,19 +27,6 @@
 
 static const double DEFAULT_DISTANCE_FILTER = 50.00;
 
-/*
-- (NSManagedObjectContext *)managedObjectContext {
-
-    NSManagedObjectContext *context = nil;
-
-    id delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate performSelector:@selector(managedObjectContext)]) {
-        context = [delegate managedObjectContext];
-    }
-    return context;
-}
-*/
 
 //Class method to make sure the share model is synch across the app
 + (id)sharedManager {
@@ -52,41 +41,16 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
 }
 
 
-- (NSString *)returnDate
-{
-    NSString *strDate;
-    
-    NSDate * now = [NSDate date];
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"HH:mm:ss"];
-    outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    
-    NSString *newDateString = [outputFormatter stringFromDate:now];
-    NSLog(@"newDateString %@", newDateString);
-    
-    NSDateFormatter *outputFormatterYear = [[NSDateFormatter alloc] init];
-    [outputFormatterYear setDateFormat:@"YYYY:MM:dd"];
-    NSString *newDateStringYear = [outputFormatterYear stringFromDate:now];
-    NSLog(@"newDateStringYear %@", newDateStringYear);
-    
-    strDate = [NSString stringWithFormat:@"%@%@%@",newDateStringYear,@"-",newDateString];
-    
-    return strDate;
-}
-
-
 #pragma mark - CLLocationManager
-
-
-
+// BEGIN LOCATION MANAGER *****************************************************************************
 - (void) registerForMonitorLocation {
     NSLog(@"registerForMonitorLocation");
-
+    
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         // If status is not determined, then we should ask for authorization.
         [_anotherLocationManager requestAlwaysAuthorization];
         NSLog(@"requestAlwaysAuthorization");
-
+        
     } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
         // If authorization has been denied previously, inform the user.
         NSLog(@"%s: location services authorization was previously denied by the user.", __PRETTY_FUNCTION__);
@@ -124,7 +88,7 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     [_anotherLocationManager stopMonitoringVisits];
     [_anotherLocationManager stopUpdatingLocation];
     [_anotherLocationManager stopMonitoringSignificantLocationChanges];
-
+    
     if (IS_OS_8_OR_LATER) {
         [_anotherLocationManager requestAlwaysAuthorization];
     }
@@ -140,20 +104,20 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
 
 - (void) startMonitoringLocationFrequently {
     NSLog(@"startMonitoringLocationFrequently: stopMonitoringSignificantLocationChanges");
-
+    
     if (_anotherLocationManager) {
         [_anotherLocationManager stopUpdatingLocation];
         [_anotherLocationManager stopMonitoringSignificantLocationChanges];
     }
     
-
-        self.anotherLocationManager = [[CLLocationManager alloc]init];
-        _anotherLocationManager.delegate = self;
-        _anotherLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
-        _anotherLocationManager.activityType = CLActivityTypeOtherNavigation;
-        _anotherLocationManager.distanceFilter = DEFAULT_DISTANCE_FILTER;
-        
-
+    
+    self.anotherLocationManager = [[CLLocationManager alloc]init];
+    _anotherLocationManager.delegate = self;
+    _anotherLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    _anotherLocationManager.activityType = CLActivityTypeOtherNavigation;
+    _anotherLocationManager.distanceFilter = DEFAULT_DISTANCE_FILTER;
+    
+    
     if(IS_OS_8_OR_LATER) {
         [_anotherLocationManager requestAlwaysAuthorization];
     }
@@ -163,7 +127,7 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
 }
 
 
-    
+
 #pragma mark - CLLocationManager Delegate
 
 
@@ -171,21 +135,21 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     NSLog(@"didChangeAuthorizationStatus");
     
-        if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
-            // Start the standard location service.
-            [_anotherLocationManager startUpdatingLocation];
-        }
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
+        // Start the standard location service.
+        [_anotherLocationManager startUpdatingLocation];
+    }
 }
 
 // A core location error occurred.
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-        NSLog(@"didFailWithError: %@", error);
+    NSLog(@"didFailWithError: %@", error);
 }
 
 
 - (void)locationManager:(CLLocationManager *)manager didVisit:(CLVisit *)visit {
-    NSLog(@"didVisit:");
-
+    NSLog(@"didVisit BEGIN:");
+    
     CLLocation *locationLast = [[CLLocation alloc] initWithLatitude:visit.coordinate.latitude longitude:visit.coordinate.longitude];
     
     NSTimeInterval locationAge = -[locationLast.timestamp timeIntervalSinceNow];
@@ -193,8 +157,9 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     
     if (locationLast.horizontalAccuracy < 0) return;
     
+    NSLog(@"didVisit END:");
     [self saveInBaseDate:locationLast];
-
+    
 }
 
 
@@ -204,7 +169,7 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     NSLog(@"locationManager1:");
     
     CLLocation *locationLast = [locations lastObject];
-
+    
     NSTimeInterval locationAge = -[locationLast.timestamp timeIntervalSinceNow];
     if (locationAge > 5.0) return;
     
@@ -212,119 +177,115 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     
     [self saveInBaseDate:(CLLocation *)locationLast];
 }
+// END LOCATION MANAGER *****************************************************************************
 
 
 
+// BEGIN LOCATION MANAGER *****************************************************************************
 - (void)saveInBaseDate:(CLLocation *)locationLast
 {
     
     NSLog(@"saveInBaseDate");
     
     MyLocationClass *myLocationObj = [[MyLocationClass alloc] init];
-
-    NSNumber *myLatitude = [NSNumber numberWithDouble:locationLast.coordinate.latitude];
-    NSNumber *myLongitude = [NSNumber numberWithDouble:locationLast.coordinate.longitude];
+    CoreDataWorker *myCoreDataObj = [[CoreDataWorker alloc] init];
+    
+    //NSNumber *myLatitude = [NSNumber numberWithDouble:locationLast.coordinate.latitude];
+    //NSNumber *myLongitude = [NSNumber numberWithDouble:locationLast.coordinate.longitude];
     
     NSString *modeHome;
     if ([self checkPlaceIfInside:locationLast] == 0) {
-        modeHome = @"OUT_OF_WORK";
+        modeHome = MARKOUT;
     }
     else {
-        modeHome = @"WORK";
+        modeHome = MARKIN;
     }
-    
     
     NSString *strMode = @"0";
-    NSString *home;
+    NSString *home = @"";
     bool postOnServer = FALSE;
-    if (([modeHome isEqualToString:@"OUT_OF_WORK"]) && ([myLocationObj checkMode] == 1)) {
+    if (([modeHome isEqualToString:MARKOUT]) && ([myCoreDataObj getLocationModeWithKeyVal:@"mode"] == 1)) {
         // chage from WORK to OUT_OF_WORK
-        [myLocationObj writeMode:0];
+        NSLog(@"chage from WORK to OUT_OF_WORK");
+        [myCoreDataObj changeLocationModeWithModeKey:@"mode" modeVal:0];
         postOnServer = TRUE;
-        home = @"Out of WORK";
+        home = MARKOUT;
     }
     
-    if (([modeHome isEqualToString:@"WORK"]) && ([myLocationObj checkMode] == 0)) {
+    if (([modeHome isEqualToString:MARKIN]) && ([myCoreDataObj getLocationModeWithKeyVal:@"mode"] == 0)) {
         // chage from OUT_OF_WORK to WORK
-        [myLocationObj writeMode:1];
+        NSLog(@"chage from OUT_OF_WORK to WORK");
+        [myCoreDataObj changeLocationModeWithModeKey:@"mode" modeVal:1];
         strMode = @"1";
         postOnServer = TRUE;
-        home = @"WORK";
+        home = MARKIN;
     }
     
     NotificationLocal *myNotifObj = [[NotificationLocal alloc] init];
-    [myNotifObj triggerNotificationWithTitle:@"INFO" body:[NSString stringWithFormat:@"%@_%d",home,[myLocationObj checkMode]]];
-
-    NSLog(@"before postOnServer strMode=%@",strMode);
-
+    
+    // check if timestamp exists in database
+    
+    NSString *currentTimeStamp = [myLocationObj getDate:false];
+    
+    NSLog(@"date(false) = %@",currentTimeStamp);
+    
+    NSLog(@"QQQ from NSLog");
+    os_log(OS_LOG_DEFAULT, "QQQ from os_log");
+    
+    if (!postOnServer) {
+        
+        [myNotifObj triggerNotificationWithTitle:@"INFO" body:[NSString stringWithFormat:@"Before postOnServer [%ld] [%@]",(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"], currentTimeStamp]];
+        
+        NSLog(@"before postOnServer strMode=%ld",(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]);
+        
+    }
     if (postOnServer) {
         
-        [myNotifObj triggerNotificationWithTitle:@"INFO" body:[NSString stringWithFormat:@"Post on server %@_%d",home,[myLocationObj checkMode]]];
-
-        NSString *dateAndMode = [NSString stringWithFormat:@"%@ - %@",[self returnDate],modeHome];
+        // Notify
+        [myNotifObj triggerNotificationWithTitle:@"INFO" body:[NSString stringWithFormat:@"Post on server [%@_%ld]",home,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]]];
+        
+        
+        // Get a new value for main counter
+        int mainCounter = [myCoreDataObj getLocationModeWithKeyVal:@"lastId"] + 1;
+        NSLog(@"before mainCounter=%i",[myCoreDataObj getLocationModeWithKeyVal:@"lastId"]);
+        [myCoreDataObj changeLocationModeWithModeKey:@"lastId" modeVal:mainCounter];
+        NSLog(@"after mainCounter=%i",[myCoreDataObj getLocationModeWithKeyVal:@"lastId"]);
+        
         
         // Save in coredata
-        CoreDataWorker *myCoreWorker = [[CoreDataWorker alloc] init];
-        [myCoreWorker storeTranscriptionWithDate:dateAndMode latitude:[myLatitude stringValue] longitude:[myLongitude stringValue]];
-        NSLog(@"after CoreDataWorker strMode=%@",strMode);
-
-        // Send on server
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self postForTestNew:locationLast place:[NSString stringWithFormat:@"%@_%@",modeHome,strMode]];
-        });
+        CoreDataWorker *myCoreDataObj = [[CoreDataWorker alloc] init];
+        NSString *strLatitude = [NSString stringWithFormat:@"%f",locationLast.coordinate.latitude];
+        NSString *strLongitude = [NSString stringWithFormat:@"%f",locationLast.coordinate.longitude];
+        [myCoreDataObj storeTranscriptionWithDate:[NSString stringWithFormat:@"%@ - %@",currentTimeStamp, [NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]]] latitude:strLatitude longitude:strLongitude server:FALSE counter:mainCounter];
         
-
+        
+        // Send on server
+        [self postForTestNew:locationLast currentTime:currentTimeStamp place:[NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]] counter:mainCounter];
+        
     }
-
 }
 
-
+// Check if place is inside range
 - (int)checkPlaceIfInside:(CLLocation *)locationLocal
 {
     NSLog(@"checkPlaceIfInside");
     
-    
     MyLocationClass *myLocationObj = [[MyLocationClass alloc] init];
-    
-    CLLocation *homeLocation = [[CLLocation alloc] initWithLatitude:43.5084 longitude:16.4719];
-    // jelsa 43.161120, 16.693168
-    // split 43.512678, 16.461408
-    // Work 43.5084, 16.4719
-    
-
-    
+    CLLocation *homeLocation = [[CLLocation alloc] initWithLatitude:latitudeConst longitude:longitudeConst];
     int result = 0;
-    
-    if ([myLocationObj checkLocationinsideRadius:100 myLocation:homeLocation locationForTest:locationLocal])
+    if ([myLocationObj checkLocationinsideRadius:RANGERADIUS myLocation:homeLocation locationForTest:locationLocal])
         result = 1;
-
     
     return result;
 }
 
-- (void) postForTestNew:(CLLocation *) locationLocal place:(NSString *)strPlace
+
+// Post on server
+- (void) postForTestNew:(CLLocation *) locationLocal currentTime:(NSString *)currentTimeStamp place:(NSString *)strPlace counter:(int)counterVal
 {
     //MyLocationClass *myLocationObj = [[MyLocationClass alloc] init];
-
     
-    NSDate * now = [NSDate date];
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"HH:mm:ss"];
-    outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-    
-    NSString *newDateString = [outputFormatter stringFromDate:now];
-    NSLog(@"newDateString %@", newDateString);
-    
-    NSDateFormatter *outputFormatterYear = [[NSDateFormatter alloc] init];
-    [outputFormatterYear setDateFormat:@"YYYY:MM:dd"];
-    NSString *newDateStringYear = [outputFormatterYear stringFromDate:now];
-    NSLog(@"newDateStringYear %@", newDateStringYear);
-    
-    NSString *fullDateTime = [NSString stringWithFormat:@"%@%@%@",newDateStringYear,@"-",newDateString];
-    
-    //strPlace = [NSString stringWithFormat:@"%@%@%i",strPlace,@"_",[myLocationObj checkMode]];
-    
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.dariocaric.net/wh/postForTest1.php?date=%@&latitude=%@&longitude=%@&place=%@",fullDateTime, @(locationLocal.coordinate.latitude), @(locationLocal.coordinate.longitude), strPlace];
+    NSString *urlStr = [NSString stringWithFormat:URLCONST,counterVal,currentTimeStamp, @(locationLocal.coordinate.latitude), @(locationLocal.coordinate.longitude), strPlace];
     
     NSLog(@"urlStr=%@",urlStr);
     
@@ -333,15 +294,32 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"text/plain" forHTTPHeaderField:@"Content-type"];
-    [[session dataTaskWithRequest:request
-                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                    
-                    
-                    // handle response
-                    NSLog(@"postForTest:response=%@     error=%@",response,error);
-                    
-                    
-                }] resume];
+    
+    dispatch_queue_attr_t lowPriorityAttr = dispatch_queue_attr_make_with_qos_class (DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND,-1);
+    dispatch_queue_t myQueueSerial = dispatch_queue_create ("dariocaric.net",lowPriorityAttr);
+    dispatch_async(myQueueSerial, ^{
+        
+        [[session dataTaskWithRequest:request
+                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                        
+                        // handle response
+                        NSLog(@"postForTest:response=%@     error=%@",response,error);
+                        if (error == nil) {
+                            // make update in CoreData
+                            NSLog(@"Posted on server with counter=%i",counterVal);
+                            
+                        }
+                        
+                    }
+          
+          
+          ] resume];
+        
+    });
+    // here implement part for storing in CoreData, information about data stored on server
+    // on that way APP will know what is missing on server
+    // CoreData extend with <server=0/1>
+    
 }
 
 

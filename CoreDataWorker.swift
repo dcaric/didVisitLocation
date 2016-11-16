@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import UIKit
+import os
 
 @available(iOS 10.0, *)
 class CoreDataWorker: NSObject {
@@ -41,11 +42,11 @@ class CoreDataWorker: NSObject {
         //save the object
         do {
             try context.save()
-            print("saved! New Value = \(modeVal)")
+            os_log("saved! New Value = %i",modeVal)
         } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
+            os_log("Could not save error=%s, error.userInfo=%s",error,error.userInfo)
         } catch {
-            print ("catch 2")
+            os_log("catch")
         }
     }
     
@@ -61,19 +62,16 @@ class CoreDataWorker: NSObject {
             
         } catch  {
             let fetchError = error as NSError
-            print(fetchError)
+            os_log("Could not save error=%s",fetchError)
         }
     }
     
+    
+    // Store data in Device core data
     public func storeTranscription (date: String, latitude: String, longitude: String, server: Bool, counter: Int16) {
-        print("storeTranscription!")
-        
-        
+        //retrieve the entity
         let context = getContext()
-        
-        //retrieve the entity that we just created
-        let entity =  NSEntityDescription.entity(forEntityName: "Device", in: context)
-        
+        let entity = NSEntityDescription.entity(forEntityName: "Device", in: context)
         let transc = NSManagedObject(entity: entity!, insertInto: context)
         
         //set the entity values
@@ -85,9 +83,9 @@ class CoreDataWorker: NSObject {
         //save the object
         do {
             try context.save()
-            print("storeTranscription: saved!")
+            os_log("storeTranscription: saved!")
         } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
+            os_log("Could not save error=%s, error.userInfo=%s",error,error.userInfo)
         } catch {
             
         }
@@ -97,10 +95,12 @@ class CoreDataWorker: NSObject {
     
     
     
-    
+    // Read data from Device core data into array
     public func getTranscriptions () -> Array<User> {
         
+        // 1st way to define array of struct User - I preffare this
         var users: Array<User> = []
+        // 2nd way to def array of Struct User
         //var users: [User] = []
         
         //create a fetch request, telling it about the entity
@@ -108,28 +108,29 @@ class CoreDataWorker: NSObject {
         
         
         do {
-            //go get the results
+            //get the results
             let searchResults = try getContext().fetch(fetchRequest)
             
-            //I like to check the size of the returned results!
-            print ("num of results = \(searchResults.count)")
+            //Size of the returned results
+            os_log ("num of results = %d",searchResults.count)
             
             
             //You need to convert to NSManagedObject to use 'for' loops
             for trans in searchResults as! [NSManagedObject] {
-                //get the Key Value pairs (although there may be a better way to do that...
-                print("\(trans.value(forKey: "date"))")
-                print("\(trans.value(forKey: "latitude"))")
-                print("\(trans.value(forKey: "longitude"))")
-                print("\(trans.value(forKey: "counter"))")
+                os_log("date = %s",trans.value(forKey: "date") as! CVarArg)
+                os_log("latitude = %s",trans.value(forKey: "latitude") as! CVarArg)
+                os_log("longitude = %s",trans.value(forKey: "longitude") as! CVarArg)
+                os_log("counter = %i",trans.value(forKey: "counter") as! CVarArg)
                 
+                // Build User1 type of structure User - 1 entry
                 let User1 = User.init(date: (trans.value(forKey: "date") as! String), latitude: (trans.value(forKey: "latitude") as! String), longitude: (trans.value(forKey: "longitude") as! String), counter: (trans.value(forKey: "counter") as! Int16))
                 
+                // Add User1 entry into users array
                 users.append(User1)
-                //print ("users = \(users[0].date)")
             }
         } catch {
-            print("Error with request: \(error)")
+            let fetchError = error as NSError
+            os_log("Error = %s", fetchError)
         }
         
         
@@ -139,55 +140,50 @@ class CoreDataWorker: NSObject {
     }
     
     
+    
+    // Read entities from table LocationMode
     public func getLocationMode(keyVal : String) -> Int16 {
         
-        var OldMode : Int16 = 0
+        var OldValue : Int16 = 0
         //create a fetch request, telling it about the entity
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"LocationMode")
-        
-        // prepare to save in core data
-        //let context = getContext()
-        //let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
-        //let transc = NSManagedObject(entity: entity!, insertInto: context)
         
         var dataSize : Int = 0;
         do {
             //go get the results
             let searchResults = try getContext().fetch(fetchRequest)
-            //print ("1: LocationMode size = \(searchResults.count)")
             dataSize = searchResults.count
         } catch {
             let fetchError = error as NSError
-            print(fetchError)
+            os_log("Error = %s", fetchError)
         }
         
         // read the old value
         if (dataSize == 0) {
-            print ("There are no element")
+            os_log("There are no elements")
         }
         else {
             // fetch old mode
             do {
                 let fetchModeResult = try getContext().fetch(fetchRequest)
                 let fetchMode1 = fetchModeResult[0] as! NSManagedObject
-                OldMode = fetchMode1.value(forKey: keyVal) as! Int16
-                print("Mode Value = \(OldMode) for key = \(keyVal)")
-                
+                OldValue = fetchMode1.value(forKey: keyVal) as! Int16
+                os_log("Value = %i for key =%s",OldValue,keyVal)
             } catch {
                 let fetchError = error as NSError
-                print(fetchError)
+                os_log("Error = %s", fetchError)
             }
             
         }
         
-        return OldMode
+        return OldValue
         
     }
     
     
+    // Updae entities from table LocationMode
     public func changeLocationMode(modeKey : String, modeVal : Int16) -> Void {
         
-        var OldMode : Int16 = 0;
         
         var locationModeRec : Array<LocationModeRec> = []
         
@@ -195,120 +191,121 @@ class CoreDataWorker: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"LocationMode")
         
         // prepare to save in core data
+        let context = getContext()
+        let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
+        //let transc = NSManagedObject(entity: entity!, insertInto: context)
+        
+        //set the entity values
         //let context = getContext()
         //let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
-        //let transc = NSManagedObject(entity: entity!, insertInto: context)
+        //let transcTemp = NSManagedObject(entity: entity!, insertInto: context)
         
         do {
             //go get the results
             let searchResults = try getContext().fetch(fetchRequest)
-            print ("1: LocationMode size = \(searchResults.count)")
+            os_log ("Size = %d",searchResults.count)
             
             
-            // read the old value
+            // If size == 0 - first time update
             if (searchResults.count == 0) {
-                print ("There are no element")
+                os_log("There are no elements until now, size = 0")
                 //set the entity values
-                let context = getContext()
-                let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
+                // Case for mode entity
                 let transcTemp = NSManagedObject(entity: entity!, insertInto: context)
                 if (modeKey == "mode") {
                     transcTemp.setValue(modeVal , forKey: "mode")
                     transcTemp.setValue(0, forKey: "lastId")
+                    os_log("mode = %i lastId = 0",modeVal)
                 }
+                // Case for lastId entity
                 if (modeKey == "lastId") {
                     transcTemp.setValue(modeVal , forKey: "lastId")
                     transcTemp.setValue(0, forKey: "mode")
+                    os_log("lastId = %i mode = 0",modeVal)
+                    
                 }
                 //transcTemp.setValue(locationModeRec[0].date, forKey: "date")
-                //save the object
+                
+                //Now save the object
                 do {
                     try context.save()
-                    print("1 changeLocationMode: saved!")
+                    os_log("Object saved in LocationMode")
                 } catch let error as NSError  {
-                    print("Could not save \(error), \(error.userInfo)")
+                    os_log("Could not save error=%s, error.userInfo=%s",error,error.userInfo)
+                    
                 } catch {
                     
                 }
-                //self.saveMode(modeKey: modeKey, modeVal: modeVal)
             }
+                
+                // If size != 0 - update entities in the table
             else {
                 // fetch old mode
-                /*
-                 do {
-                 let fetchModeResult = try getContext().fetch(fetchRequest)
-                 let fetchMode1 = fetchModeResult[0] as! NSManagedObject
-                 OldMode = fetchMode1.value(forKey: modeKey) as! Int16
-                 print("Old Value = \(OldMode) for key = \(modeKey)")
-                 
-                 } catch {
-                 let fetchError = error as NSError
-                 print(fetchError)
-                 }
-                 */
-                
                 var searchResults = try getContext().fetch(fetchRequest)
-                print ("num of results = \(searchResults.count)")
+                os_log("Size = %i",searchResults.count)
                 
                 //You need to convert to NSManagedObject to use 'for' loops
                 for trans in searchResults as! [NSManagedObject] {
-                    print ("Inside searchResults")
                     //get the Key Value pairs (although there may be a better way to do that...
-                    print("mode = \(trans.value(forKey: "mode"))")
-                    print("lastId = \(trans.value(forKey: "lastId"))")
+                    os_log("mode = %i",trans.value(forKey: "mode") as! CVarArg)
+                    os_log("lastId = %i",trans.value(forKey: "lastId") as! CVarArg)
                     
+                    // Set one entity of LocationModeRec
                     let LocationModeRec1 = LocationModeRec.init(mode: (trans.value(forKey: "mode") as! Int16), lastId: (trans.value(forKey: "lastId") as! Int16))
                     
+                    // Build array - it will be only 1 record but this is easier to handle
+                    // Via array os struc LocationModeRec
                     locationModeRec.append(LocationModeRec1)
                 }
                 
-                // delete old record
                 
+                
+                // We have now saved old values in locationModeRec
+                // Delete now old record from core data
                 do {
                     let fetchModeResult = try getContext().fetch(fetchRequest)
                     let fetchMode1 = fetchModeResult[0] as! NSManagedObject
                     getContext().delete(fetchMode1)
-                    
+                    os_log("Record deleted in LocationMode")
                 } catch  {
                     let fetchError = error as NSError
-                    print(fetchError)
+                    os_log("Could not save, error = %i",fetchError)
                 }
-                //self.deleteMode()
                 
-                //set the entity values
-                let context = getContext()
-                let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
+                
+                //Now set nand save new values in LocationMode
                 let transcTemp = NSManagedObject(entity: entity!, insertInto: context)
+                // Case for mode
                 if (modeKey == "mode") {
                     transcTemp.setValue(modeVal , forKey: "mode")
                     transcTemp.setValue(locationModeRec[0].lastId, forKey: "lastId")
+                    os_log("Setting mode = %i lastId = %i",modeVal,locationModeRec[0].lastId)
                 }
+                // Case for lastId
                 if (modeKey == "lastId") {
                     transcTemp.setValue(modeVal , forKey: "lastId")
                     transcTemp.setValue(locationModeRec[0].mode, forKey: "mode")
+                    os_log("Setting lastId = %i mode = %i",modeVal,locationModeRec[0].mode)
+                    
                 }
                 //save the object
                 do {
                     try context.save()
-                    print("2 changeLocationMode: saved!")
-                    print ("mode =\(locationModeRec[0].mode)")
-                    print ("lastId =\(locationModeRec[0].lastId)")
+                    os_log("Saved mode = %i",locationModeRec[0].mode)
+                    os_log("Saved lastId = %i",locationModeRec[0].lastId)
+                    
                 } catch let error as NSError  {
-                    print("Could not save \(error), \(error.userInfo)")
+                    os_log("Could not save, error = %i",error)
                 } catch {
                     
                 }
                 
-                //self.saveMode(modeKey: modeKey, modeVal: modeVal)
-                
                 //go check the results
                 searchResults = try getContext().fetch(fetchRequest)
-                print ("2: LocationMode size = \(searchResults.count)")
-                
+                os_log("Size = %i",searchResults.count)
             }
             
         } catch {
-            print ("catch 1")
             
         }
         
@@ -318,53 +315,56 @@ class CoreDataWorker: NSObject {
     
     
     
-    
-    public func checkDate(dateToCheck : String) -> Bool {
-        
-        //create a fetch request, telling it about the entity
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"Device")
-        
-        var result : Bool = false
-        
-        var dataSize : Int = 0;
-        do {
-            //go get the results
-            let searchResults = try getContext().fetch(fetchRequest)
-            //print ("data size = \(searchResults.count)")
-            dataSize = searchResults.count
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        
-        // check if there is already timestamp in database
-        if (dataSize == 0) {
-            print ("There are no element")
-        }
-        else {
-            // fetch time
-            do {
-                
-                fetchRequest.predicate = NSPredicate(format: "date CONTAINS %@", dateToCheck)
-                let searchResults = try getContext().fetch(fetchRequest)
-                var count : Int = 0
-                for trans in searchResults as! [NSManagedObject] {
-                    count += 1
-                    print("date = \(trans.value(forKey: "date"))")
-                }
-                if (count > 0) {
-                    result = true
-                }
-                
-            } catch {
-                let fetchError = error as NSError
-                print(fetchError)
-            }
-            
-        }
-        
-        return result
-        
-    }
+    // Check date form Device core data
+    // Not used for now
+    /*
+     public func checkDate(dateToCheck : String) -> Bool {
+     
+     //create a fetch request, telling it about the entity
+     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"Device")
+     
+     var result : Bool = false
+     
+     var dataSize : Int = 0;
+     do {
+     //go get the results
+     let searchResults = try getContext().fetch(fetchRequest)
+     //print ("data size = \(searchResults.count)")
+     dataSize = searchResults.count
+     } catch {
+     let fetchError = error as NSError
+     print(fetchError)
+     }
+     
+     // check if there is already timestamp in database
+     if (dataSize == 0) {
+     print ("There are no element")
+     }
+     else {
+     // fetch time
+     do {
+     
+     fetchRequest.predicate = NSPredicate(format: "date CONTAINS %@", dateToCheck)
+     let searchResults = try getContext().fetch(fetchRequest)
+     var count : Int = 0
+     for trans in searchResults as! [NSManagedObject] {
+     count += 1
+     print("date = \(trans.value(forKey: "date"))")
+     }
+     if (count > 0) {
+     result = true
+     }
+     
+     } catch {
+     let fetchError = error as NSError
+     print(fetchError)
+     }
+     
+     }
+     
+     return result
+     
+     }
+     */
     
 }

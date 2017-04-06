@@ -9,8 +9,7 @@
 #import "LocationManager.h"
 #import <UIKit/UIKit.h>
 #import "MyLocationClass.h"
-#import "WorkHours3-Swift.h"
-#import "Engine.h"
+#import "CheckOutIn-Swift.h"
 #include <os/log.h>
 
 #import "Constants.h"
@@ -252,15 +251,20 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
         NSLog(@"after mainCounter=%i",[myCoreDataObj getLocationModeWithKeyVal:@"lastId"]);
         
         
-        // Save in coredata
+        // Save date, latitute and lungitude in coredata
         CoreDataWorker *myCoreDataObj = [[CoreDataWorker alloc] init];
         NSString *strLatitude = [NSString stringWithFormat:@"%f",locationLast.coordinate.latitude];
         NSString *strLongitude = [NSString stringWithFormat:@"%f",locationLast.coordinate.longitude];
         [myCoreDataObj storeTranscriptionWithDate:[NSString stringWithFormat:@"%@ - %@",currentTimeStamp, [NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]]] latitude:strLatitude longitude:strLongitude server:FALSE counter:mainCounter];
         
         
-        // Send on server
-        [self postForTestNew:locationLast currentTime:currentTimeStamp place:[NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]] counter:mainCounter];
+        // Send date, latitute and lungitude on server
+        dispatch_queue_attr_t lowPriorityAttr = dispatch_queue_attr_make_with_qos_class (DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND,-1);
+        dispatch_queue_t myQueueSerial = dispatch_queue_create ("dariocaric.net",lowPriorityAttr);
+        dispatch_async(myQueueSerial, ^{
+            [self postForTestNew:locationLast currentTime:currentTimeStamp place:[NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]] counter:mainCounter];
+            
+        });
         
     }
 }
@@ -295,27 +299,24 @@ static const double DEFAULT_DISTANCE_FILTER = 50.00;
     [request setHTTPMethod:@"GET"];
     [request setValue:@"text/plain" forHTTPHeaderField:@"Content-type"];
     
-    dispatch_queue_attr_t lowPriorityAttr = dispatch_queue_attr_make_with_qos_class (DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND,-1);
-    dispatch_queue_t myQueueSerial = dispatch_queue_create ("dariocaric.net",lowPriorityAttr);
-    dispatch_async(myQueueSerial, ^{
-        
-        [[session dataTaskWithRequest:request
-                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                        
-                        // handle response
-                        NSLog(@"postForTest:response=%@     error=%@",response,error);
-                        if (error == nil) {
-                            // make update in CoreData
-                            NSLog(@"Posted on server with counter=%i",counterVal);
-                            
-                        }
+    
+    [[session dataTaskWithRequest:request
+                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    
+                    // handle response
+                    NSLog(@"postForTest:response=%@     error=%@",response,error);
+                    if (error == nil) {
+                        // make update in CoreData
+                        NSLog(@"Posted on server with counter=%i",counterVal);
                         
                     }
-          
-          
-          ] resume];
-        
-    });
+                    
+                }
+      
+      
+      ] resume];
+    
+
     // here implement part for storing in CoreData, information about data stored on server
     // on that way APP will know what is missing on server
     // CoreData extend with <server=0/1>

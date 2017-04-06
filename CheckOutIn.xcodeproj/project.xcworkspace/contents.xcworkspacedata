@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:WorkHours3.xcodeproj">
+      location = "self:/Users/dariocaric/Dropbox/MyTesting/Working/WorkHoursGit/CheckOutIn.xcodeproj">
    </FileRef>
 </Workspace>

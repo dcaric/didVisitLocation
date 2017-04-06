@@ -13,11 +13,8 @@
 #define URLCONST @"https://www.dariocaric.net/wh/postForTest1.php?counter=%i&date=%@&latitude=%@&longitude=%@&place=%@"
 #define latitudeConst 43.5084
 #define longitudeConst 16.4719
-#define RANGERADIUS 100
+#define RANGERADIUS 200
 
-// jelsa 43.161120, 16.693168
-// split 43.512678, 16.461408
-// Work 43.5084, 16.4719
 
 @interface Constants : NSObject
 

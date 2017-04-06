@@ -20,9 +20,9 @@ class NotificationLocal: NSObject {
         content.sound = UNNotificationSound.default()
         // NSNumber
         //content.badge = NSNumber(integerLiteral: UIApplication.shared.applicationIconBadgeNumber + 1);
-        content.categoryIdentifier = "com.elonchan.localNotification"
+        //content.categoryIdentifier = ""
         // Deliver the notification in five seconds.
-        /**** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'time interval must be at least 60 if repeating'*/
+        /*** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'time interval must be at least 60 if repeating'*/
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 15, repeats: false)
         let request = UNNotificationRequest.init(identifier: "FiveSecond", content: content, trigger: trigger)
         

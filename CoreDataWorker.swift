@@ -98,11 +98,8 @@ class CoreDataWorker: NSObject {
     // Read data from Device core data into array
     public func getTranscriptions () -> Array<User> {
         
-        // 1st way to define array of struct User - I preffare this
         var users: Array<User> = []
-        // 2nd way to def array of Struct User
-        //var users: [User] = []
-        
+
         //create a fetch request, telling it about the entity
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"Device")
         
@@ -194,11 +191,6 @@ class CoreDataWorker: NSObject {
         let context = getContext()
         let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
         //let transc = NSManagedObject(entity: entity!, insertInto: context)
-        
-        //set the entity values
-        //let context = getContext()
-        //let entity =  NSEntityDescription.entity(forEntityName: "LocationMode", in: context)
-        //let transcTemp = NSManagedObject(entity: entity!, insertInto: context)
         
         do {
             //go get the results
@@ -311,60 +303,5 @@ class CoreDataWorker: NSObject {
         
     }
     
-    
-    
-    
-    
-    // Check date form Device core data
-    // Not used for now
-    /*
-     public func checkDate(dateToCheck : String) -> Bool {
-     
-     //create a fetch request, telling it about the entity
-     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"Device")
-     
-     var result : Bool = false
-     
-     var dataSize : Int = 0;
-     do {
-     //go get the results
-     let searchResults = try getContext().fetch(fetchRequest)
-     //print ("data size = \(searchResults.count)")
-     dataSize = searchResults.count
-     } catch {
-     let fetchError = error as NSError
-     print(fetchError)
-     }
-     
-     // check if there is already timestamp in database
-     if (dataSize == 0) {
-     print ("There are no element")
-     }
-     else {
-     // fetch time
-     do {
-     
-     fetchRequest.predicate = NSPredicate(format: "date CONTAINS %@", dateToCheck)
-     let searchResults = try getContext().fetch(fetchRequest)
-     var count : Int = 0
-     for trans in searchResults as! [NSManagedObject] {
-     count += 1
-     print("date = \(trans.value(forKey: "date"))")
-     }
-     if (count > 0) {
-     result = true
-     }
-     
-     } catch {
-     let fetchError = error as NSError
-     print(fetchError)
-     }
-     
-     }
-     
-     return result
-     
-     }
-     */
-    
+
 }

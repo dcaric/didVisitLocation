@@ -24,39 +24,27 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
 
 
-
-        //        self.myMethodWithBlock(distance: "OK3") {
-        //            (complition : Bool) in
-        //            if (complition) {
-        //                print("TRUE")
-        //            }
-        //            else {
-        //                print("FALSE")
-        //            }
-        //        }
-
         range.text = RANGERADIUS.description
 
         let center = UNUserNotificationCenter.current()
 
         // create actions
-        let accept = UNNotificationAction.init(identifier: "com.elonchan.yes",
+        let accept = UNNotificationAction.init(identifier: "dcapps.net.CheckOutIn.yes",
                                                title: "Accept",
                                                options: UNNotificationActionOptions.foreground)
-        let decline = UNNotificationAction.init(identifier: "com.elonchan.no",
+        let decline = UNNotificationAction.init(identifier: "dcapps.net.CheckOutIn.no",
                                                 title: "Decline",
                                                 options: UNNotificationActionOptions.destructive)
-        let snooze = UNNotificationAction.init(identifier: "com.elonchan.snooze", title: "Snooze", options: UNNotificationActionOptions.destructive)
+        let snooze = UNNotificationAction.init(identifier: "dcapps.net.CheckOutIn.snooze", title: "Snooze", options: UNNotificationActionOptions.destructive)
         let actions = [ accept, decline, snooze ]
 
         // create a category
-        let inviteCategory = UNNotificationCategory(identifier: "com.elonchan.localNotification", actions: actions, intentIdentifiers: [], options: [])
+        let inviteCategory = UNNotificationCategory(identifier: "dcapps.net.CheckOutIn.localNotification", actions: actions, intentIdentifiers: [], options: [])
         // registration
         center.setNotificationCategories([ inviteCategory ])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             // Enable or disable features based on authorization.
         }
-        // Do any additional setup after loading the view, typically from a nib.
 
 
 
@@ -82,14 +70,6 @@ class ViewController: UIViewController {
 
 
 
-    //
-    //    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    //        if segue.identifier == "mainView" {
-    //            let thisViewController = segue.destination as! ViewController
-    //            thisViewController.dele = self
-    //        }
-    //    }
-    
     
 }
 

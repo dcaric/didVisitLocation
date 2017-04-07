@@ -239,13 +239,15 @@
         
         
         // Send date, latitute and lungitude on server
-        dispatch_queue_attr_t lowPriorityAttr = dispatch_queue_attr_make_with_qos_class (DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND,-1);
-        dispatch_queue_t myQueueSerial = dispatch_queue_create ("dariocaric.net",lowPriorityAttr);
-        dispatch_async(myQueueSerial, ^{
-            [self postOnServer:locationLast currentTime:currentTimeStamp place:[NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]] counter:mainCounter];
-            
-        });
-        
+        // commented for now, has to add valid domain + php script or some other way to post
+        // on your server
+//        dispatch_queue_attr_t lowPriorityAttr = dispatch_queue_attr_make_with_qos_class (DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND,-1);
+//        dispatch_queue_t myQueueSerial = dispatch_queue_create ("dariocaric.net",lowPriorityAttr);
+//        dispatch_async(myQueueSerial, ^{
+//            [self postOnServer:locationLast currentTime:currentTimeStamp place:[NSString stringWithFormat:@"%@_%ld",modeHome,(long)[myCoreDataObj getLocationModeWithKeyVal:@"mode"]] counter:mainCounter];
+//            
+//        });
+
     }
 }
 
@@ -281,36 +283,41 @@
  Posts on server timestamp
 
 */
- - (void) postOnServer:(CLLocation *) locationLocal currentTime:(NSString *)currentTimeStamp place:(NSString *)strPlace counter:(int)counterVal
-{
-
-    NSString *urlStr = [NSString stringWithFormat:URLCONST,counterVal,currentTimeStamp, @(locationLocal.coordinate.latitude), @(locationLocal.coordinate.longitude), strPlace];
-    
-    DLog(@"urlStr=%@",urlStr);
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"text/plain" forHTTPHeaderField:@"Content-type"];
-    
-    
-    [[session dataTaskWithRequest:request
-                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                    
-                    // handle response
-                    DLog(@"postForTest:response=%@     error=%@",response,error);
-                    if (error == nil) {
-                        // make update in CoreData
-                        DLog(@"Posted on server with counter=%i",counterVal);
-                        
-                    }
-                    
-                }
-      
-      
-      ] resume];
-}
+// method is fine but it is not active since it has to be designed
+// own php or some other script to post on server
+// this is just for the demo purpose to show that even if app was killed, not active
+// and in background it can post on server in this small period of time
+// when iOS wakes it to inform about location update
+// - (void) postOnServer:(CLLocation *) locationLocal currentTime:(NSString *)currentTimeStamp place:(NSString *)strPlace counter:(int)counterVal
+//{
+//
+//    NSString *urlStr = [NSString stringWithFormat:URLCONST,counterVal,currentTimeStamp, @(locationLocal.coordinate.latitude), @(locationLocal.coordinate.longitude), strPlace];
+//    
+//    DLog(@"urlStr=%@",urlStr);
+//    
+//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+//    [request setHTTPMethod:@"GET"];
+//    [request setValue:@"text/plain" forHTTPHeaderField:@"Content-type"];
+//    
+//    
+//    [[session dataTaskWithRequest:request
+//                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//                    
+//                    // handle response
+//                    DLog(@"postForTest:response=%@     error=%@",response,error);
+//                    if (error == nil) {
+//                        // make update in CoreData
+//                        DLog(@"Posted on server with counter=%i",counterVal);
+//                        
+//                    }
+//                    
+//                }
+//      
+//      
+//      ] resume];
+//}
 
 
 @end

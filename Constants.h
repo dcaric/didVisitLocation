@@ -10,7 +10,11 @@
 
 #define MARKIN @"WORK"
 #define MARKOUT @"OUT_OF_WORK"
-#define URLCONST @"https://www.dariocaric.net/wh/postForTest1.php?counter=%i&date=%@&latitude=%@&longitude=%@&place=%@"
+
+// this is only template and it is not working 
+#define URLCONST @"https://www.domain.com/phpscript.php?counter=%i&date=%@&latitude=%@&longitude=%@&place=%@"
+
+
 #define DEFAULT_DISTANCE_FILTER 50.00;
 
 // Input arguments

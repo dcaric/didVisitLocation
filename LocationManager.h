@@ -1,9 +1,9 @@
 //
 //  LocationShareModel.h
-//  Location
+//  CheckOutIn
 //
-//  Created by Rick
-//  Copyright (c) 2014 Location. All rights reserved.
+//  Created by Dario Caric on 29/10/2016.
+//  Copyright © 2016 Dario Caric. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,33 +14,12 @@
 
 @interface LocationManager : NSObject
 
-@property (nonatomic) CLLocationManager * anotherLocationManager;
 
-@property (nonatomic) CLLocationCoordinate2D myLastLocation;
-@property (nonatomic) CLLocationAccuracy myLastLocationAccuracy;
+//+ (id)sharedManager;
 
-@property (nonatomic) CLLocationCoordinate2D myLocation;
-@property (nonatomic) CLLocationAccuracy myLocationAccuracy;
-@property (nonatomic) NSString *place;
-
-@property (nonatomic) NSMutableDictionary *myLocationDictInPlist;
-@property (nonatomic) NSMutableArray *myLocationArrayInPlist;
-
-@property (nonatomic) BOOL afterResume;
-
-
-@property (strong) NSManagedObject *device;
-
-
-+ (id)sharedManager;
-
-- (void)startMonitoringLocation;
-- (void)restartMonitoringLocation;
-- (void)startMonitoringLocationFrequently;
+- (void) startMonitoringLocation;
 - (void) stopMonitorigLocation;
-- (void) registerForMonitorLocation;
-
-
-- (void)saveInBaseDate:(CLLocation *)locationLast;
+- (void) restartMonitoringLocation;
+- (void) startMonitoringLocationFrequently;
 
 @end

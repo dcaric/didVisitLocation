@@ -1,6 +1,6 @@
 //
 //  CoreDataWorker.swift
-//  WorkHours3
+//  CheckOutIn
 //
 //  Created by Dario Caric on 30/10/2016.
 //  Copyright © 2016 Dario Caric. All rights reserved.

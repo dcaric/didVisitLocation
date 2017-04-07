@@ -1,6 +1,6 @@
 //
 //  Constants.h
-//  WorkHours6
+//  CheckOutIn
 //
 //  Created by Dario Caric on 07/11/2016.
 //  Copyright © 2016 Dario Caric. All rights reserved.
@@ -14,6 +14,7 @@
 #define latitudeConst 43.5084
 #define longitudeConst 16.4719
 #define RANGERADIUS 200
+#define DEFAULT_DISTANCE_FILTER 50.00;
 
 
 @interface Constants : NSObject
